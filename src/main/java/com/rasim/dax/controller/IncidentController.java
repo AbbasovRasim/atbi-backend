@@ -26,8 +26,15 @@ public class IncidentController {
             @RequestBody Incident incident,
             @RequestHeader("Authorization") String token
     ) {
-        Long userId = jwtService.extractUserId(token.substring(7));
+
+        String jwt = token.substring(7);
+
+        Long userId = jwtService.extractUserId(jwt);
+        String username = jwtService.extractUsername(jwt);
+
         incident.setUserId(userId);
+        incident.setCreatedBy(username);
+
         return incidentService.createIncident(incident);
     }
 

@@ -20,12 +20,6 @@ public class IncidentService {
     // INCIDENT YARAT
     public Incident createIncident(Incident incident) {
 
-        String username = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getName();
-
-        incident.setCreatedBy(username);
 
         return incidentRepository.save(incident);
     }
