@@ -2,6 +2,7 @@ package com.rasim.dax.service;
 
 import com.rasim.dax.entity.Incident;
 import com.rasim.dax.repository.IncidentRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +17,20 @@ public class IncidentService {
         this.incidentRepository = incidentRepository;
     }
 
+    // INCIDENT YARAT
     public Incident createIncident(Incident incident) {
+
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        incident.setCreatedBy(username);
+
         return incidentRepository.save(incident);
     }
 
-    // ✅ DÜZGÜN - SİLİNMƏYƏNLƏRİ GÖSTƏR
+    // SİLİNMƏYƏNLƏRİ GÖSTƏR
     public List<Incident> getAllIncidents() {
         return incidentRepository.findByDeletedFalse();
     }
@@ -31,13 +41,18 @@ public class IncidentService {
 
     public void softDeleteIncident(Long id) {
         Incident incident = incidentRepository.findById(id).orElseThrow();
+
         incident.setDeleted(true);
+
         incidentRepository.save(incident);
     }
 
     public Incident updateStatus(Long id, String status) {
+
         Incident incident = incidentRepository.findById(id).orElseThrow();
+
         incident.setStatus(status);
+
         return incidentRepository.save(incident);
     }
 }

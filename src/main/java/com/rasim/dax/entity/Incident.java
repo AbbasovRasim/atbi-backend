@@ -13,7 +13,7 @@ public class Incident {
     private Long id;
 
     private Long userId;
-
+    private String createdBy;
     private String fullName;
     private String position;
     private String department;
@@ -30,6 +30,14 @@ public class Incident {
 
     public Incident() {}
 
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
