@@ -25,9 +25,20 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+
+                        // LOGIN hərkəsə açıq
+                        .requestMatchers("/auth/login").permitAll()
+
+                        // REGISTER yalnız ADMIN üçün
+                        .requestMatchers("/auth/register").hasAuthority("ADMIN")
+
+                        // OPTIONS requestlər
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/incidents/**").permitAll()
+
+                        // Incident endpointləri yalnız login olmuş userlər üçün
+                        .requestMatchers("/incidents/**").authenticated()
+
+                        // Digər bütün requestlər
                         .anyRequest().authenticated()
                 )
 
