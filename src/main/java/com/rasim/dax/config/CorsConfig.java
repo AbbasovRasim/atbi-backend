@@ -14,7 +14,7 @@ public class CorsConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOriginPattern("*");
+        config.addAllowedOriginPattern("https://atbi-system.vercel.app");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
