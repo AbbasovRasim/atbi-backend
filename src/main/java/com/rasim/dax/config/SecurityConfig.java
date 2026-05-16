@@ -4,11 +4,13 @@ import com.rasim.dax.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity  // ✅ BUNU ƏLAVƏ ET
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -25,20 +27,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-
                         // LOGIN hərkəsə açıq
                         .requestMatchers("/auth/login").permitAll()
 
-                        // ✅ DÜZGÜN - REGISTER YALNIZ ADMIN ÜÇÜN
-                        .requestMatchers("/auth/register").hasRole("ADMIN")
+                        // ✅ REGISTER - HƏR KƏSƏ AÇIQ (MÜVƏQQƏTİ)
+                        .requestMatchers("/auth/register").permitAll()
 
                         // OPTIONS requestlər
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Incident endpointləri yalnız login olmuş userlər üçün
-                        .requestMatchers("/incidents/**").authenticated()
-
-                        // Digər bütün requestlər
+                        // QALAN HƏR ŞEY - LOGIN TƏLƏB EDİR
                         .anyRequest().authenticated()
                 )
 

@@ -1,6 +1,7 @@
 package com.rasim.dax.controller;
 
 import com.rasim.dax.entity.User;
+import com.rasim.dax.security.AdminOnly;
 import com.rasim.dax.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
+    @AdminOnly  // ✅ YALNIZ ADMIN İCƏZƏSİ
     public ResponseEntity<?> register(@RequestBody User user) {
         try {
             String result = authService.register(user);
