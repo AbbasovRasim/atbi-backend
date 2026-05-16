@@ -13,24 +13,52 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter) {
+    public SecurityConfig(
+            JwtFilter jwtFilter
+    ) {
+
         this.jwtFilter = jwtFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
         http
                 .cors(cors -> {})
+
                 .csrf(csrf -> csrf.disable())
 
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable())
+                )
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/register").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/incidents/**").authenticated()
-                        .requestMatchers("/files/download/**").authenticated()
-                        .anyRequest().authenticated()
+
+                        .requestMatchers(
+                                "/auth/login"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/auth/register"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.OPTIONS,
+                                "/**"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/incidents/**"
+                        ).authenticated()
+
+                        .requestMatchers(
+                                "/files/download/**"
+                        ).authenticated()
+
+                        .anyRequest()
+                        .authenticated()
                 )
 
                 .addFilterBefore(
