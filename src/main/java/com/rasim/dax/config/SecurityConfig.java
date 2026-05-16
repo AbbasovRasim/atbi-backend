@@ -1,4 +1,3 @@
-package com.rasim.dax.config;
 
 import com.rasim.dax.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
