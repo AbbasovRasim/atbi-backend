@@ -29,9 +29,8 @@ public class SecurityConfig {
                         // LOGIN hərkəsə açıq
                         .requestMatchers("/auth/login").permitAll()
 
-                        // REGISTER yalnız ADMIN üçün
-                        // MÜVƏQQƏTİ - YALNIZ TEST ÜÇÜN
-                        .requestMatchers("/auth/register").permitAll()  // hasAuthority("ADMIN") əvəzinə
+                        // ✅ REGISTER YALNIZ ADMIN ÜÇÜN (DÜZGÜN VERSİYA)
+                        .requestMatchers("/auth/register").hasAuthority("ADMIN")
 
                         // OPTIONS requestlər
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
