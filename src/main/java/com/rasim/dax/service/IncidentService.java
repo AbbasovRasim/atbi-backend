@@ -2,7 +2,6 @@ package com.rasim.dax.service;
 
 import com.rasim.dax.entity.Incident;
 import com.rasim.dax.repository.IncidentRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +18,6 @@ public class IncidentService {
 
     // INCIDENT YARAT
     public Incident createIncident(Incident incident) {
-
-
         return incidentRepository.save(incident);
     }
 
@@ -35,18 +32,21 @@ public class IncidentService {
 
     public void softDeleteIncident(Long id) {
         Incident incident = incidentRepository.findById(id).orElseThrow();
-
         incident.setDeleted(true);
-
         incidentRepository.save(incident);
     }
 
     public Incident updateStatus(Long id, String status) {
-
         Incident incident = incidentRepository.findById(id).orElseThrow();
-
         incident.setStatus(status);
-
         return incidentRepository.save(incident);
+    }
+
+    // ✅ YENİ METOD - PDF fayl adına görə incident tap
+    public Incident findIncidentByPdfFileName(String pdfFileName) {
+        return incidentRepository.findByDeletedFalse().stream()
+                .filter(incident -> pdfFileName.equals(incident.getPdfFileName()))
+                .findFirst()
+                .orElse(null);
     }
 }
