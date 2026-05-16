@@ -23,14 +23,10 @@ public class SecurityConfig {
         http
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions().disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/auth/register").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/incidents/**").authenticated()
-                        .requestMatchers("/files/download/**").authenticated()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/**").permitAll()
                 )
 
                 .addFilterBefore(
