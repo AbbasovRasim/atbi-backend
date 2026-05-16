@@ -26,14 +26,17 @@ public class IncidentController {
             @RequestBody Incident incident,
             @RequestHeader("Authorization") String token
     ) {
-
         String jwt = token.substring(7);
-
         Long userId = jwtService.extractUserId(jwt);
         String username = jwtService.extractUsername(jwt);
 
         incident.setUserId(userId);
         incident.setCreatedBy(username);
+
+        // ✅ PDF fayl yolunu təyin et (əgər varsa)
+        if (incident.getPdfFileName() != null && !incident.getPdfFileName().isEmpty()) {
+            incident.setPdfFilePath("/files/download/" + incident.getPdfFileName());
+        }
 
         return incidentService.createIncident(incident);
     }
@@ -50,7 +53,6 @@ public class IncidentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ DÜZGÜN STATUS METODU
     @PutMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(
             @PathVariable Long id,
@@ -65,13 +67,11 @@ public class IncidentController {
             return ResponseEntity.notFound().build();
         }
 
-        // ADMIN hər kəsin statusunu dəyişə bilər
         if ("ADMIN".equals(role)) {
             Incident updated = incidentService.updateStatus(id, status);
             return ResponseEntity.ok(updated);
         }
 
-        // İşçi YALNIZ ÖZ pozuntusunun statusunu dəyişə bilər
         if (incident.getUserId() != null && incident.getUserId().equals(userId)) {
             Incident updated = incidentService.updateStatus(id, status);
             return ResponseEntity.ok(updated);
@@ -80,7 +80,6 @@ public class IncidentController {
         return ResponseEntity.status(403).body("Başqasının pozuntusunun statusunu dəyişə bilməzsiniz!");
     }
 
-    // ✅ DÜZGÜN DELETE METODU
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteIncident(
             @PathVariable Long id,
@@ -94,13 +93,11 @@ public class IncidentController {
             return ResponseEntity.notFound().build();
         }
 
-        // ADMIN hər şeyi silə bilər
         if ("ADMIN".equals(role)) {
             incidentService.softDeleteIncident(id);
             return ResponseEntity.ok("Silindi");
         }
 
-        // İşçi YALNIZ ÖZ pozuntusunu silə bilər
         if (incident.getUserId() != null && incident.getUserId().equals(userId)) {
             incidentService.softDeleteIncident(id);
             return ResponseEntity.ok("Silindi");

@@ -28,49 +28,43 @@ public class Incident {
     private String filePath;
     private Boolean deleted = false;
 
+    // ✅ PDF UPLOAD ÜÇÜN YENİ FİELDLƏR (BUNLAR ƏLAVƏ EDİLMƏLİDİR!)
+    private String pdfFileName;
+    private String pdfFilePath;
+
     public Incident() {}
 
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+    // GETTERS
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-
+    public String getCreatedBy() { return createdBy; }
     public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-
     public String getPosition() { return position; }
-    public void setPosition(String position) { this.position = position; }
-
     public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
-
     public String getIncidentType() { return incidentType; }
-    public void setIncidentType(String incidentType) { this.incidentType = incidentType; }
-
     public String getPunishment() { return punishment; }
-    public void setPunishment(String punishment) { this.punishment = punishment; }
-
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
     public LocalDate getIncidentDate() { return incidentDate; }
-    public void setIncidentDate(LocalDate incidentDate) { this.incidentDate = incidentDate; }
-
     public String getFileName() { return fileName; }
-    public void setFileName(String fileName) { this.fileName = fileName; }
-
     public String getFilePath() { return filePath; }
-    public void setFilePath(String filePath) { this.filePath = filePath; }
-
     public Boolean getDeleted() { return deleted; }
+    public String getPdfFileName() { return pdfFileName; }      // ✅ BUNU ƏLAVƏ ET
+    public String getPdfFilePath() { return pdfFilePath; }      // ✅ BUNU ƏLAVƏ ET
+
+    // SETTERS
+    public void setId(Long id) { this.id = id; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setPosition(String position) { this.position = position; }
+    public void setDepartment(String department) { this.department = department; }
+    public void setIncidentType(String incidentType) { this.incidentType = incidentType; }
+    public void setPunishment(String punishment) { this.punishment = punishment; }
+    public void setStatus(String status) { this.status = status; }
+    public void setIncidentDate(LocalDate incidentDate) { this.incidentDate = incidentDate; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
     public void setDeleted(Boolean deleted) { this.deleted = deleted; }
+    public void setPdfFileName(String pdfFileName) { this.pdfFileName = pdfFileName; }   // ✅ BUNU ƏLAVƏ ET
+    public void setPdfFilePath(String pdfFilePath) { this.pdfFilePath = pdfFilePath; }   // ✅ BUNU ƏLAVƏ ET
 }
