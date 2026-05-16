@@ -14,35 +14,39 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class FileController {
 
-    private final String UPLOAD_DIR = "uploads/";
+    // ✅ Render.com üçün /tmp qovluğu
+    private final String UPLOAD_DIR = "/tmp/uploads/";
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
+            System.out.println("=== UPLOAD START ===");
+            System.out.println("File: " + file.getOriginalFilename());
+            System.out.println("Size: " + file.getSize() + " bytes");
+
             if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body("Fayl boşdur");
             }
 
-            if (!file.getContentType().equals("application/pdf")) {
-                return ResponseEntity.badRequest().body("Yalnız PDF faylları yüklənə bilər");
-            }
-
-            // Faylın adını unikal et
+            // Fayl adı
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
-            // Qovluğu yarat (əgər yoxdursa)
+            // Qovluğu yarat
             Path uploadPath = Paths.get(UPLOAD_DIR);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
+                System.out.println("Created: " + uploadPath.toAbsolutePath());
             }
 
             // Faylı saxla
             Path filePath = uploadPath.resolve(fileName);
             Files.write(filePath, file.getBytes());
+            System.out.println("Saved: " + filePath.toAbsolutePath());
 
             return ResponseEntity.ok(fileName);
 
         } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
             return ResponseEntity.status(500).body("Fayl yüklənmədi: " + e.getMessage());
         }
     }
@@ -63,7 +67,7 @@ public class FileController {
                     .header("Content-Disposition", "inline; filename=" + fileName)
                     .body(fileBytes);
         } catch (IOException e) {
-            return ResponseEntity.status(500).body("Fayl oxunmadı: " + e.getMessage());
+            return ResponseEntity.status(500).body("Fayl oxunmadı");
         }
     }
 }
