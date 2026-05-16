@@ -49,12 +49,14 @@ public class SecurityConfig {
                                 "/**"
                         ).permitAll()
 
-                        .requestMatchers(
-                                "/incidents/**"
-                        ).authenticated()
-
+                        // PDF ACCESS
                         .requestMatchers(
                                 "/files/download/**"
+                        ).permitAll()
+
+                        // INCIDENTS
+                        .requestMatchers(
+                                "/incidents/**"
                         ).authenticated()
 
                         .anyRequest()
