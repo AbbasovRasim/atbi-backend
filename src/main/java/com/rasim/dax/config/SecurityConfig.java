@@ -29,8 +29,8 @@ public class SecurityConfig {
                         // LOGIN hərkəsə açıq
                         .requestMatchers("/auth/login").permitAll()
 
-                        // ✅ REGISTER YALNIZ ADMIN ÜÇÜN
-                        .requestMatchers("/auth/register").hasAuthority("ADMIN")
+                        // ✅ DÜZGÜN - REGISTER YALNIZ ADMIN ÜÇÜN
+                        .requestMatchers("/auth/register").hasRole("ADMIN")
 
                         // OPTIONS requestlər
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
