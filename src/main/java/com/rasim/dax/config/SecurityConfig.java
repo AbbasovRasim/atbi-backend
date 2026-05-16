@@ -1,3 +1,4 @@
+package com.rasim.dax.config;
 
 import com.rasim.dax.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
@@ -22,10 +23,14 @@ public class SecurityConfig {
         http
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> headers.frameOptions().disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/register").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/incidents/**").authenticated()
+                        .requestMatchers("/files/download/**").authenticated()
+                        .anyRequest().authenticated()
                 )
 
                 .addFilterBefore(
