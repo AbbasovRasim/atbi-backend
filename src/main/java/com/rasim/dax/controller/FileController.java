@@ -50,9 +50,11 @@ public class FileController {
                 return ResponseEntity.status(404).body("Fayl tapılmadı");
             }
             byte[] fileBytes = Files.readAllBytes(filePath);
+
             return ResponseEntity.ok()
                     .header("Content-Type", "application/pdf")
                     .header("Content-Disposition", "inline; filename=" + fileName)
+                    .header("X-Frame-Options", "SAMEORIGIN")
                     .body(fileBytes);
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Fayl oxunmadı: " + e.getMessage());
